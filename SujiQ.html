@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+
+<html>
+  <head>
+   <title>変換天才</title>
+   <link rel="stylesheet" type="text/css" href="NCstyle.css">
+
+
+	<script>
+	
+
+	//myriad converter function help from Stack Overflow user paxdiablo
+	function makeNum(num) {
+   	num = num.replace(/,/g,"");  		  //remove commas
+   	var markers = "万億兆京該秭穣溝澗正載極";
+   	var result = "";
+
+	//regroup in myriads
+   	while (num.length > 4) {
+        if (markers.length == 0) {
+            result = "(?)" + num.substr(num.length-4) + result;
+        } else {
+            result = markers.substr(0, 1) + num.substr(num.length-4) + result;
+            markers = markers.substr(1);
+        }
+        num = num.substr(0, num.length-4);
+  	}
+   	 return num + result;
+	}
+
+	//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+	// insert commas for readability
+	//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+	function makeCom(num){
+
+	  num = num.replace(/,/g, "");
+	
+	  var result = num.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+
+	  return result;
+
+	}
+
+	function convert(){
+	
+	var innum = document.getElementById("input").value;
+	var parsnum = (innum.replace(/,/g,""));
+	if (isNaN(parseInt(parsnum)) == true) {
+	document.getElementById("converted").innerHTML = "Please enter valid number.";
+
+	}
+	else {
+	var myriad = makeNum(innum);
+
+	// delete unnec. zeros 
+	myriad = myriad.replace(/0000\D/g, "");
+	myriad = myriad.replace(/(\D)0+/g, "$1");
+	document.getElementById("converted").innerHTML = myriad ;
+	
+	//display number with commas
+	var commanum = makeCom(innum);
+	document.getElementById("commaed").innerHTML = "You entered: " + commanum ;
+	
+	  }
+	}
+
+	
+	
+	//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+	// button functions
+	//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+	
+	function multiplier(kake) {
+	 var mult = document.getElementById("input").value;
+	
+	  if (mult == "") {
+	   mult = kake;
+		}
+
+	  else if (isNaN(mult)==false){
+	   mult = (mult * kake);
+		}
+
+	  else {
+	   document.getElementById("converted").innerHTML = "Please enter valid number";
+	   return;
+		}
+
+	  document.getElementById("input").value = mult; 
+	}
+
+
+	function thou(){
+	 multiplier(1000);
+
+	 }
+
+	function xMil(){
+	 multiplier(1000000);
+	}
+	function xBil(){
+	 multiplier(1000000000);
+	}
+
+	function xTril(){
+	 multiplier(1000000000000);
+	}
+
+	function xQuad(){
+	 multiplier(1000000000000000);
+	} 	
+	
+	function clr(){
+	document.getElementById("input").value = "";
+	document.getElementById("converted").innerHTML = "";
+	document.getElementById("commaed").innerHTML = "";
+	}
+
+	
+	</script>
+
+  </head>
+
+  <body style="background-color: #FFFFCC;">
+	 
+	<div><p>Enter a large whole number (commas OK). </p></div>
+	<input type="text" id="input"/>
+	<input type="submit" id="submit" value="Convert" onclick="convert()">
+	<br>
+	<input type="button" id="xthou" onclick="thou()" value="thousand">
+	<input type="button" id="xmil" onclick="xMil()" value="million">
+	<input type="button" id="xbil" onclick="xBil()" value="billion">
+	<br>
+	<input type="button" id="xtril" onclick="xTril()" value="trillion">
+	<input type="button" id="xquad" onclick="xQuad()" value="quadrillion">
+	<input type="button" id="clr" onclick="clr()" value="Clr"> 
+	<br><br>
+	<div><span id="commaed"></span></div>
+	<br>
+	<div id="converted"></div>
+
+
+
+  </body>
+
+</html>
